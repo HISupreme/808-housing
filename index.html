@@ -95,7 +95,7 @@
     line-height: 1.5;
     margin-bottom: 1rem;
   }
-  header { margin-bottom: 1.5rem; }
+  header { margin-bottom: 1.5rem; padding-top: 0.25rem; }
   h1 {
     font-size: 22px;
     font-weight: 500;
@@ -415,52 +415,6 @@
     color: var(--text);
     font-family: inherit;
   }
-  .mode-toggle {
-    display: inline-flex;
-    border: 0.5px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-  }
-  .mode-toggle button {
-    background: transparent;
-    border: none;
-    padding: 8px 14px;
-    min-height: 38px;
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    color: var(--text);
-    touch-action: manipulation;
-  }
-  .mode-toggle button.active { background: var(--surface-2); }
-  .mode-toggle button + button { border-left: 0.5px solid var(--border-strong); }
-  .header-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .advocate-panel {
-    display: none;
-    margin-top: 1.25rem;
-    background: var(--surface-2);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.125rem;
-  }
-  .advocate-panel.open { display: block; }
-  .advocate-panel .heading {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-  .advocate-panel .notes {
-    font-size: 13px;
-    color: var(--text-2);
-    line-height: 1.7;
-  }
-  .advocate-panel .notes div { margin-bottom: 6px; }
   .toast {
     position: fixed;
     bottom: 20px;
@@ -497,16 +451,10 @@
   <strong>Prototype.</strong> Not legal or financial advice. Always verify eligibility with the listed agency before applying.
 </div>
 
-<div class="header-row">
-  <header>
-    <h1>808 Housing</h1>
-    <div class="subtitle">Find Hawaiʻi housing programs you may qualify for · 2025 HUD limits · 16 programs</div>
-  </header>
-  <div class="mode-toggle" role="tablist" aria-label="View mode">
-    <button id="mode-resident" class="active" role="tab" aria-selected="true">Resident</button>
-    <button id="mode-advocate" role="tab" aria-selected="false">Advocate</button>
-  </div>
-</div>
+<header>
+  <h1>808 Housing</h1>
+  <div class="subtitle">Find Hawaiʻi housing programs you may qualify for · 2025 HUD limits · 16 programs</div>
+</header>
 
 <div class="panel">
   <div class="grid">
@@ -554,11 +502,6 @@
 <div id="ami-summary" class="summary"></div>
 
 <div id="results"></div>
-
-<div id="advocate-panel" class="advocate-panel">
-  <div class="heading">Advocate notes</div>
-  <div id="advocate-notes" class="notes"></div>
-</div>
 
 <div class="actions">
   <button class="action-btn" data-action="explain">Explain in plain language</button>
@@ -644,7 +587,6 @@
   ];
 
   const flags = new Set();
-  let mode = 'resident';
 
   // Read state from URL hash if present
   function readStateFromHash() {
@@ -700,21 +642,6 @@
     });
     flagsEl.appendChild(btn);
   });
-
-  document.getElementById('mode-resident').addEventListener('click', () => setMode('resident'));
-  document.getElementById('mode-advocate').addEventListener('click', () => setMode('advocate'));
-
-  function setMode(m) {
-    mode = m;
-    const r = document.getElementById('mode-resident');
-    const a = document.getElementById('mode-advocate');
-    r.classList.toggle('active', m === 'resident');
-    a.classList.toggle('active', m === 'advocate');
-    r.setAttribute('aria-selected', m === 'resident');
-    a.setAttribute('aria-selected', m === 'advocate');
-    document.getElementById('advocate-panel').classList.toggle('open', m === 'advocate');
-    render();
-  }
 
   ['island', 'household', 'income', 'goal'].forEach(id => {
     const el = document.getElementById(id);
@@ -1128,23 +1055,6 @@
             '</div>' +
           '</details>'
           : '');
-    }
-
-    if (mode === 'advocate') {
-      const notes = [];
-      const islandName = document.getElementById('island').selectedOptions[0].text;
-      notes.push('Client at ' + pctAMI + '% AMI, ' + hh + '-person household, ' + islandName + '. ' + bracketLabel(pctAMI) + ' bracket.');
-      notes.push('Reference limits: 30%=$' + limits.eli_30.toLocaleString() + ' · 50%=$' + limits.vli_50.toLocaleString() + ' · 60%=$' + limits.mi_60.toLocaleString() + ' · 80%=$' + limits.li_80.toLocaleString() + ' · 100%=$' + limits.ami_100.toLocaleString() + ' · 140%=$' + limits.ami_140.toLocaleString());
-      if (pctAMI <= 30) notes.push('ELI bracket — Section 8, public housing, and emergency assistance are top priority.');
-      else if (pctAMI <= 50) notes.push('VLI bracket — strong LIHTC and Section 8 voucher candidate.');
-      else if (pctAMI <= 80) notes.push('LI bracket — LIHTC at 60%/80% AMI properties. Workforce housing also accessible.');
-      else if (pctAMI <= 140) notes.push('Workforce/missing-middle bracket — Bill 7, HHFDC for-sale, HCDA reserved housing, NHHBG DPA are the main levers.');
-      else notes.push('Above 140% AMI — limited eligibility for income-restricted programs. Focus on conventional purchase strategy.');
-      if (flags.has('native_hawaiian')) notes.push('DHHL: file application immediately if not already on list — wait time averages 23 years, so position compounds.');
-      if (flags.has('lahaina')) notes.push('Maui fire status: priority placement available. Stack federal disaster assistance with state programs.');
-      if (flags.has('currently_homeless')) notes.push('Currently homeless: route through Partners in Care (Oʻahu) or Bridging the Gap CoC (neighbor islands) for coordinated entry.');
-      if (eligible.length >= 3) notes.push('Apply to all ' + eligible.length + ' eligible programs in parallel — sequential applications waste 6–18 months per program.');
-      document.getElementById('advocate-notes').innerHTML = notes.map(n => '<div>• ' + escapeHtml(n) + '</div>').join('');
     }
   }
 
