@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a18" media="(prefers-color-scheme: dark)">
+<title>Kuleana Tax Exemption — 808 Housing</title>
+<meta name="description" content="If your family owns kuleana land in Hawaiʻi, you may qualify to pay $0–$300 per year in property tax instead of thousands. Step-by-step guide.">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kuleana Tax Exemption — 808 Housing">
+<meta property="og:description" content="If your family owns kuleana land, you may pay $0–$300 a year in property tax instead of thousands. Step-by-step guide.">
+<meta property="og:locale" content="en_US">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏝%3C/text%3E%3C/svg%3E">
+
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f3f1ea;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.18);
+    --text: #1a1a18;
+    --text-2: #5f5e5a;
+    --text-3: #888780;
+    --info-bg: #E6F1FB;
+    --info-fg: #0C447C;
+    --info-border: #85B7EB;
+    --success-bg: #EAF3DE;
+    --success-fg: #27500A;
+    --danger-bg: #FCEBEB;
+    --danger-fg: #791F1F;
+    --warning-bg: #FAEEDA;
+    --warning-fg: #633806;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --tap-min: 44px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18;
+      --surface: #232321;
+      --surface-2: #2c2c2a;
+      --border: rgba(255,255,255,0.1);
+      --border-strong: rgba(255,255,255,0.22);
+      --text: #f5f4ef;
+      --text-2: #b4b2a9;
+      --text-3: #888780;
+      --info-bg: #042C53;
+      --info-fg: #B5D4F4;
+      --info-border: #185FA5;
+      --success-bg: #173404;
+      --success-fg: #C0DD97;
+      --danger-bg: #501313;
+      --danger-fg: #F7C1C1;
+      --warning-bg: #412402;
+      --warning-fg: #FAC775;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  body { overflow-x: hidden; }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+  @media (min-width: 600px) {
+    .container { padding: 2rem 1.25rem 4rem; }
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 13px;
+  }
+  .nav a {
+    color: var(--text-2);
+    text-decoration: none;
+  }
+  .nav a:hover { text-decoration: underline; }
+  header { margin-bottom: 1.5rem; padding-top: 0.25rem; }
+  h1 {
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  @media (min-width: 600px) { h1 { font-size: 30px; } }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+  .progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .progress-step {
+    flex: 1;
+    height: 4px;
+    background: var(--surface-2);
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .progress-step.active {
+    background: var(--info-fg);
+  }
+  .progress-step.complete {
+    background: var(--success-fg);
+  }
+  .step-label {
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 12px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .step-prose {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .step-prose p { margin: 0 0 0.875em; }
+  .step-prose p:last-child { margin-bottom: 0; }
+  .step-prose strong { color: var(--text); }
+  .panel {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .panel h2 {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+  }
+  .field {
+    margin-bottom: 1rem;
+  }
+  .field:last-child { margin-bottom: 0; }
+  label.field-label {
+    font-size: 13px;
+    color: var(--text-2);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  select, input[type="text"], input[type="number"] {
+    width: 100%;
+    height: var(--tap-min);
+    padding: 0 12px;
+    background: var(--surface);
+    color: var(--text);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22292.4%22 height%3D%22292.4%22%3E%3Cpath fill%3D%22%23888780%22 d%3D%22M287 69.4a17.6 17.6 0 0 0-13-5.4H18.4c-5 0-9.3 1.8-12.9 5.4A17.6 17.6 0 0 0 0 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95c3.5-3.5 5.4-7.8 5.4-12.8 0-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    padding-right: 36px;
+  }
+  select:focus, input:focus {
+    outline: 2px solid var(--info-border);
+    outline-offset: -1px;
+  }
+  .choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .choice-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    min-height: var(--tap-min);
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    touch-action: manipulation;
+    line-height: 1.4;
+    width: 100%;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .choice-btn:hover {
+    border-color: var(--info-border);
+  }
+  .choice-btn.active {
+    background: var(--info-bg);
+    border-color: var(--info-border);
+    color: var(--info-fg);
+  }
+  .choice-btn .choice-detail {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .choice-btn.active .choice-detail {
+    color: var(--info-fg);
+    opacity: 0.85;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+  .nav-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    min-height: var(--tap-min);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    touch-action: manipulation;
+    flex: 1;
+  }
+  .nav-btn.primary {
+    background: var(--info-fg);
+    color: var(--bg);
+    border-color: var(--info-fg);
+  }
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .help-text {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .savings-card {
+    background: var(--success-bg);
+    color: var(--success-fg);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .savings-card .savings-amount {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 8px 0;
+    letter-spacing: -0.02em;
+  }
+  .savings-card .savings-detail {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .info-card {
+    background: var(--info-bg);
+    color: var(--info-fg);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .info-card strong { font-weight: 600; }
+  .warning-card {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .checklist {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 1.55;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item::before {
+    content: '☐';
+    margin-right: 12px;
+    font-size: 18px;
+    color: var(--text-3);
+    flex-shrink: 0;
+  }
+  .contacts {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .contacts h2 {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+  }
+  .contact-item {
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-item strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+  .contact-item a {
+    color: var(--info-fg);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .contact-item a:active { text-decoration: underline; }
+  .actions-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  @media (min-width: 480px) {
+    .actions-row { grid-template-columns: 1fr 1fr; }
+  }
+  .action-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    min-height: var(--tap-min);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    touch-action: manipulation;
+    line-height: 1.3;
+  }
+  footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 11px;
+    color: var(--text-3);
+    line-height: 1.6;
+  }
+  footer a { color: var(--text-2); }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    z-index: 2000;
+    transition: transform 0.25s ease-out;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="nav">
+  <a href="/">← 808 Housing home</a>
+  <span style="color: var(--text-3);">Kuleana Tax Exemption</span>
+</div>
+
+<header>
+  <h1>Kuleana tax exemption</h1>
+  <div class="subtitle">If your family owns kuleana land — land your kūpuna received under the Kuleana Act of 1850 — you may qualify to pay $0–$300 a year in property tax instead of thousands. This walkthrough helps you find out and file.</div>
+</header>
+
+<div class="progress" aria-label="Progress">
+  <div class="progress-step active" data-step="1"></div>
+  <div class="progress-step" data-step="2"></div>
+  <div class="progress-step" data-step="3"></div>
+  <div class="progress-step" data-step="4"></div>
+  <div class="progress-step" data-step="5"></div>
+</div>
+
+<div id="step-content"></div>
+
+<footer>
+  Built for Native Hawaiian families as a free, private tool. No tracking, no signup, no data collected. Information sourced from the Office of Hawaiian Affairs, Native Hawaiian Legal Corporation, and the four county real property tax offices. The kuleana exemption is governed by HRS 246-31 and county ordinances. This tool is for orientation, not legal advice — for help with quiet title disputes, partition actions, or contested ancestry, contact Native Hawaiian Legal Corporation directly. Filing deadline in all counties is September 30 for the following tax year.
+</footer>
+
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Per-county data
+  const COUNTIES = {
+    honolulu: {
+      name: 'Honolulu (Oʻahu)',
+      kuleana_tax: 'minimum $300/year',
+      kuleana_tax_amount: 300,
+      typical_owner_occupied: 4000,
+      form: 'Kuleana Land Exemption claim',
+      office: 'Real Property Assessment Division',
+      phone: '808-768-3799',
+      email: 'bfsrpmailbox@honolulu.gov',
+      website: 'https://realproperty.honolulu.gov',
+      address: '842 Bethel Street, Basement, Honolulu HI 96813'
+    },
+    maui: {
+      name: 'Maui',
+      kuleana_tax: '$0/year (fully exempt)',
+      kuleana_tax_amount: 0,
+      typical_owner_occupied: 3000,
+      form: 'Kuleana Land Application',
+      office: 'Maui County Real Property Assessment',
+      phone: '808-270-7297',
+      email: 'rpassessment@mauicounty.gov',
+      website: 'https://www.mauicounty.gov/2008/Real-Property-Assessment',
+      address: '110 ʻAlaʻihi Street, Suite 210, Kahului HI 96732'
+    },
+    hawaii: {
+      name: 'Hawaiʻi (Big Island)',
+      kuleana_tax: '$200/year (flat)',
+      kuleana_tax_amount: 200,
+      typical_owner_occupied: 2500,
+      form: 'RP Form 19-89.5 (Claim for Kuleana Land Exemption)',
+      office: 'Hawaiʻi County Real Property Tax Office',
+      phone: '808-961-8201',
+      email: 'cohrpt@hawaiicounty.gov',
+      website: 'https://www.hawaiipropertytax.com',
+      address: '101 Pauahi Street, Suite 4, Hilo HI 96720'
+    },
+    kauai: {
+      name: 'Kauaʻi',
+      kuleana_tax: '$150/year (flat)',
+      kuleana_tax_amount: 150,
+      typical_owner_occupied: 2200,
+      form: 'Kuleana Land Tax Exemption application',
+      office: 'Kauaʻi Real Property Assessment',
+      phone: '808-241-4224',
+      email: 'rpassessment@kauai.gov',
+      website: 'https://www.kauai.gov/Government/Departments-Agencies/Finance/Real-Property-Tax',
+      address: '4444 Rice Street, Suite A-454, Līhuʻe HI 96766'
+    }
+  };
+
+  const state = {
+    step: 1,
+    county: null,
+    knowKuleana: null,
+    descendantOriginal: null,
+    haveProof: null
+  };
+
+  const stepContent = document.getElementById('step-content');
+  const progress = document.querySelectorAll('.progress-step');
+
+  function updateProgress() {
+    progress.forEach((el, i) => {
+      const stepNum = i + 1;
+      el.classList.remove('active', 'complete');
+      if (stepNum < state.step) el.classList.add('complete');
+      else if (stepNum === state.step) el.classList.add('active');
+    });
+  }
+
+  function render() {
+    updateProgress();
+    if (state.step === 1) renderStep1();
+    else if (state.step === 2) renderStep2();
+    else if (state.step === 3) renderStep3();
+    else if (state.step === 4) renderStep4();
+    else if (state.step === 5) renderStep5();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderStep1() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 1 of 5</div>
+      <h2 class="step-title">What is kuleana land?</h2>
+
+      <div class="step-prose">
+        <p>The <strong>Kuleana Act of 1850</strong> allowed maka'āinana — Native Hawaiian commoners — to claim fee-simple title to the lands they were already cultivating. About 8,000 awards were granted, totaling roughly 30,000 acres across the islands.</p>
+
+        <p>If your family has been on the same piece of ancestral land for generations, and if at some point in the family history you had a Land Commission Award (LCA) or Royal Patent Grant, you may own kuleana land today.</p>
+
+        <p>Kuleana lands carry rights tied to traditional and customary practices — water access, gathering, ingress and egress — that are protected even when surrounding land is developed.</p>
+
+        <p>The kuleana property tax exemption recognizes that these lands are sacred ancestral kuleana, not market-priced real estate. <strong>Counties charge a flat or near-zero annual property tax</strong> on qualifying kuleana parcels.</p>
+      </div>
+
+      <div class="info-card">
+        <strong>Why this matters:</strong> Many Native Hawaiian families have lost ancestral kuleana to property tax foreclosure simply because they didn't know this exemption exists. Filing once protects your land for the next generation.
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn primary" id="next1">I want to find out if my land qualifies →</button>
+      </div>
+    `;
+    document.getElementById('next1').addEventListener('click', () => { state.step = 2; render(); });
+  }
+
+  function renderStep2() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 2 of 5</div>
+      <h2 class="step-title">Where is the property?</h2>
+
+      <div class="step-prose">
+        <p>Each county handles kuleana exemptions differently. Tell us where the land is so we can show you the right form, fees, and offices.</p>
+      </div>
+
+      <div class="panel">
+        <div class="choice-group" id="county-choices">
+          <button class="choice-btn" data-county="honolulu">
+            Honolulu (Oʻahu)
+            <div class="choice-detail">Kuleana tax: minimum $300/year</div>
+          </button>
+          <button class="choice-btn" data-county="maui">
+            Maui (incl. Molokaʻi, Lānaʻi)
+            <div class="choice-detail">Kuleana tax: $0/year — fully exempt</div>
+          </button>
+          <button class="choice-btn" data-county="hawaii">
+            Hawaiʻi (Big Island)
+            <div class="choice-detail">Kuleana tax: $200/year flat</div>
+          </button>
+          <button class="choice-btn" data-county="kauai">
+            Kauaʻi
+            <div class="choice-detail">Kuleana tax: $150/year flat</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" id="back2">← Back</button>
+        <button class="nav-btn primary" id="next2" disabled>Continue →</button>
+      </div>
+    `;
+
+    const buttons = document.querySelectorAll('#county-choices .choice-btn');
+    buttons.forEach(btn => {
+      if (state.county === btn.dataset.county) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.county = btn.dataset.county;
+        document.getElementById('next2').disabled = false;
+      });
+    });
+    if (state.county) document.getElementById('next2').disabled = false;
+
+    document.getElementById('back2').addEventListener('click', () => { state.step = 1; render(); });
+    document.getElementById('next2').addEventListener('click', () => { state.step = 3; render(); });
+  }
+
+  function renderStep3() {
+    const county = COUNTIES[state.county];
+    stepContent.innerHTML = `
+      <div class="step-label">Step 3 of 5</div>
+      <h2 class="step-title">Is this kuleana land?</h2>
+
+      <div class="step-prose">
+        <p>To qualify for the exemption in <strong>${county.name}</strong>, the parcel needs to be land that was originally awarded under the Kuleana Act of 1850 — meaning at some point your family received a Land Commission Award (LCA) number or Royal Patent Grant for it.</p>
+
+        <p>Common signs you may own kuleana:</p>
+        <ul style="margin: 0.5em 0; padding-left: 1.25em;">
+          <li>Your family has been on the same piece of land for many generations</li>
+          <li>The deed mentions an "LCA," "Royal Patent," "Mahele," or "Land Commission Award" number</li>
+          <li>Your kūpuna lived there before statehood (1959), or before annexation (1898)</li>
+          <li>The parcel is small (under 5 acres) and surrounded by other developed land</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>Do you know if this is kuleana land?</h2>
+        <div class="choice-group" id="know-kuleana">
+          <button class="choice-btn" data-answer="yes">
+            Yes, I have an LCA or Royal Patent number for it
+            <div class="choice-detail">You're ready to file — skip to Step 5</div>
+          </button>
+          <button class="choice-btn" data-answer="probably">
+            I think so, but need to verify
+            <div class="choice-detail">We'll show you how to confirm with the Bureau of Conveyances</div>
+          </button>
+          <button class="choice-btn" data-answer="unsure">
+            I'm not sure — help me figure it out
+            <div class="choice-detail">We'll walk you through how to check</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" id="back3">← Back</button>
+        <button class="nav-btn primary" id="next3" disabled>Continue →</button>
+      </div>
+    `;
+
+    const buttons = document.querySelectorAll('#know-kuleana .choice-btn');
+    buttons.forEach(btn => {
+      if (state.knowKuleana === btn.dataset.answer) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.knowKuleana = btn.dataset.answer;
+        document.getElementById('next3').disabled = false;
+      });
+    });
+    if (state.knowKuleana) document.getElementById('next3').disabled = false;
+
+    document.getElementById('back3').addEventListener('click', () => { state.step = 2; render(); });
+    document.getElementById('next3').addEventListener('click', () => { state.step = 4; render(); });
+  }
+
+  function renderStep4() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 4 of 5</div>
+      <h2 class="step-title">Are you a direct descendant of the original awardee?</h2>
+
+      <div class="step-prose">
+        <p>The kuleana exemption requires you to be <strong>directly descended from the person whose name appears on the original LCA or Royal Patent</strong>. Step-children, hānai children, and adopted descendants generally do not qualify (though check with an attorney — there are exceptions).</p>
+
+        <p>Genealogy verification is done through the <strong>Office of Hawaiian Affairs (OHA)</strong>. They will compare your family genealogy against the original LCA records and issue a verification letter you can submit with your county application.</p>
+      </div>
+
+      <div class="info-card">
+        <strong>OHA Genealogy Verification:</strong> Call <a href="tel:18085941835" style="color: inherit; text-decoration: underline;">808-594-1835</a> or email <strong>kuleanasurvey@oha.org</strong>. The service is free. Be ready to share names, birth dates, and family lines going back to the awardee.
+      </div>
+
+      <div class="panel">
+        <h2>Have you (or do you plan to) verify ancestry through OHA?</h2>
+        <div class="choice-group" id="descendant">
+          <button class="choice-btn" data-answer="verified">
+            Yes, OHA has verified my genealogy
+            <div class="choice-detail">You have what you need — let's prepare your filing</div>
+          </button>
+          <button class="choice-btn" data-answer="planning">
+            I'll contact OHA — but want to know what else I need
+            <div class="choice-detail">We'll show the full filing checklist</div>
+          </button>
+          <button class="choice-btn" data-answer="contested">
+            My family ancestry is contested or unclear
+            <div class="choice-detail">You may need legal help — we'll route you to NHLC</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" id="back4">← Back</button>
+        <button class="nav-btn primary" id="next4" disabled>See my filing plan →</button>
+      </div>
+    `;
+
+    const buttons = document.querySelectorAll('#descendant .choice-btn');
+    buttons.forEach(btn => {
+      if (state.descendantOriginal === btn.dataset.answer) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.descendantOriginal = btn.dataset.answer;
+        document.getElementById('next4').disabled = false;
+      });
+    });
+    if (state.descendantOriginal) document.getElementById('next4').disabled = false;
+
+    document.getElementById('back4').addEventListener('click', () => { state.step = 3; render(); });
+    document.getElementById('next4').addEventListener('click', () => { state.step = 5; render(); });
+  }
+
+  function renderStep5() {
+    const county = COUNTIES[state.county];
+    const savings = county.typical_owner_occupied - county.kuleana_tax_amount;
+
+    let pathHtml = '';
+    if (state.descendantOriginal === 'contested') {
+      pathHtml = `
+        <div class="warning-card">
+          <strong>Contested ancestry needs legal help first.</strong> Native Hawaiian Legal Corporation (NHLC) provides free legal services for kuleana title and ancestry disputes. Call them before filing — a county exemption denial without proper documentation can hurt later proceedings.
+        </div>
+      `;
+    } else if (state.knowKuleana === 'unsure' || state.knowKuleana === 'probably') {
+      pathHtml = `
+        <div class="warning-card">
+          <strong>Verify kuleana status first.</strong> Before applying for the exemption, you'll want to confirm the parcel was originally an LCA award. Two ways to check:
+          <br><br>
+          <strong>1. Bureau of Conveyances</strong> (state agency in Honolulu) — search the original deed for "LCA," "Royal Patent," or "Land Commission" references. Online at <a href="https://boc.ehawaii.gov" target="_blank" rel="noopener" style="color: inherit;">boc.ehawaii.gov</a>.
+          <br><br>
+          <strong>2. Native Hawaiian Legal Corporation</strong> can search awards records for you and confirm. Call 808-521-2302.
+        </div>
+      `;
+    }
+
+    stepContent.innerHTML = `
+      <div class="step-label">Step 5 of 5 — Your filing plan</div>
+      <h2 class="step-title">Filing in ${county.name}</h2>
+
+      <div class="savings-card">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; opacity: 0.8;">If you qualify, you'll pay</div>
+        <div class="savings-amount">${county.kuleana_tax}</div>
+        <div class="savings-detail">vs. ~$${county.typical_owner_occupied.toLocaleString()}/year for a typical owner-occupied parcel in ${county.name}. That's roughly <strong>$${savings.toLocaleString()} per year</strong> protected for your family.</div>
+      </div>
+
+      ${pathHtml}
+
+      <div class="panel">
+        <h2>What you'll need to file</h2>
+        <div class="checklist">
+          <div class="checklist-item">Completed county application: <strong>${county.form}</strong></div>
+          <div class="checklist-item">OHA genealogy verification letter (from OHA at 808-594-1835)</div>
+          <div class="checklist-item">Copy of the original deed showing LCA or Royal Patent number</div>
+          <div class="checklist-item">Current property tax bill or TMK (Tax Map Key)</div>
+          <div class="checklist-item">Government-issued ID for the current owner</div>
+          <div class="checklist-item">If multiple family members own it: names and contact for all owners</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <strong>Filing deadline:</strong> September 30 every year. The exemption applies starting July 1 of the following tax year. <strong>If you file by Sept 30, 2026, you'll start paying the kuleana rate for tax year 2027–2028.</strong>
+      </div>
+
+      <div class="contacts">
+        <h2>Who to contact in ${county.name}</h2>
+        <div class="contact-item">
+          <strong>${county.office}</strong>
+          ${county.address}
+          <br><a href="tel:${county.phone.replace(/-/g, '')}">${county.phone}</a> · <a href="mailto:${county.email}">${county.email}</a>
+          <br><a href="${county.website}" target="_blank" rel="noopener">Visit county tax website →</a>
+        </div>
+        <div class="contact-item">
+          <strong>OHA Genealogy Verification</strong>
+          Free service — verifies your descent from the original awardee.
+          <br><a href="tel:18085941835">808-594-1835</a> · kuleanasurvey@oha.org
+        </div>
+        <div class="contact-item">
+          <strong>Native Hawaiian Legal Corporation</strong>
+          Free legal help with kuleana title, partition actions, and quiet-title defense.
+          <br><a href="tel:18085212302">808-521-2302</a> · <a href="https://nativehawaiianlegalcorp.org" target="_blank" rel="noopener">nativehawaiianlegalcorp.org</a>
+        </div>
+        <div class="contact-item">
+          <strong>Bureau of Conveyances (state)</strong>
+          For deed and LCA searches.
+          <br><a href="tel:18085870147">808-587-0147</a> · <a href="https://boc.ehawaii.gov" target="_blank" rel="noopener">boc.ehawaii.gov</a>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button class="action-btn" id="copy-plan">Copy my filing plan</button>
+        <button class="action-btn" id="share-page">Share with ʻohana</button>
+      </div>
+
+      <div class="nav-buttons" style="margin-top: 1rem;">
+        <button class="nav-btn" id="back5">← Back</button>
+        <button class="nav-btn" id="restart">Start over</button>
+      </div>
+    `;
+
+    document.getElementById('copy-plan').addEventListener('click', async () => {
+      const plan = buildPlan();
+      try {
+        await navigator.clipboard.writeText(plan);
+        showToast('Filing plan copied');
+      } catch (e) {
+        showToast('Copy failed — try again');
+      }
+    });
+
+    document.getElementById('share-page').addEventListener('click', async () => {
+      const url = window.location.href;
+      const shareData = {
+        title: 'Kuleana Tax Exemption — 808 Housing',
+        text: 'If your family owns kuleana land, you may pay $0–$300/year in property tax instead of thousands:',
+        url: url
+      };
+      if (navigator.share) {
+        try { await navigator.share(shareData); return; } catch (e) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('Link copied');
+      } catch (e) {
+        showToast('Copy this URL from your browser');
+      }
+    });
+
+    document.getElementById('back5').addEventListener('click', () => { state.step = 4; render(); });
+    document.getElementById('restart').addEventListener('click', () => {
+      state.step = 1; state.county = null; state.knowKuleana = null;
+      state.descendantOriginal = null; state.haveProof = null;
+      render();
+    });
+  }
+
+  function buildPlan() {
+    const county = COUNTIES[state.county];
+    const date = new Date().toLocaleDateString();
+    let s = '808 Housing — Kuleana Tax Exemption Filing Plan (' + date + ')\n\n';
+    s += 'County: ' + county.name + '\n';
+    s += 'If qualifies — kuleana tax: ' + county.kuleana_tax + '\n';
+    s += 'Typical owner-occupied tax in this county: ~$' + county.typical_owner_occupied.toLocaleString() + '/year\n';
+    s += 'Estimated annual savings: ~$' + (county.typical_owner_occupied - county.kuleana_tax_amount).toLocaleString() + '\n\n';
+
+    s += 'WHAT TO DO:\n\n';
+
+    if (state.descendantOriginal === 'contested') {
+      s += '1. Contact Native Hawaiian Legal Corporation FIRST (808-521-2302).\n';
+      s += '   Contested ancestry needs legal help before filing.\n\n';
+    } else {
+      let stepNum = 1;
+      if (state.knowKuleana === 'unsure' || state.knowKuleana === 'probably') {
+        s += stepNum + '. Verify kuleana status:\n';
+        s += '   - Bureau of Conveyances at boc.ehawaii.gov (search deed)\n';
+        s += '   - OR Native Hawaiian Legal Corp at 808-521-2302 to search awards records\n\n';
+        stepNum++;
+      }
+      if (state.descendantOriginal === 'planning') {
+        s += stepNum + '. Get OHA genealogy verification:\n';
+        s += '   - Call 808-594-1835 or email kuleanasurvey@oha.org\n';
+        s += '   - Free service — typical 4–8 week turnaround\n\n';
+        stepNum++;
+      }
+      s += stepNum + '. Gather documents:\n';
+      s += '   - County form: ' + county.form + '\n';
+      s += '   - OHA verification letter\n';
+      s += '   - Original deed (showing LCA / Royal Patent #)\n';
+      s += '   - Current tax bill / TMK\n';
+      s += '   - Owner ID\n\n';
+      stepNum++;
+      s += stepNum + '. File with ' + county.office + '\n';
+      s += '   ' + county.address + '\n';
+      s += '   Phone: ' + county.phone + '\n';
+      s += '   Email: ' + county.email + '\n\n';
+    }
+
+    s += 'DEADLINE: September 30 (annual filing).\n';
+    s += 'Exemption takes effect July 1 of the following tax year.\n\n';
+
+    s += 'KEY CONTACTS:\n';
+    s += '- ' + county.office + ': ' + county.phone + '\n';
+    s += '- OHA Genealogy: 808-594-1835\n';
+    s += '- Native Hawaiian Legal Corp: 808-521-2302\n';
+    s += '- Bureau of Conveyances: 808-587-0147\n\n';
+
+    s += 'Generated at 808housing.org/kuleana';
+    return s;
+  }
+
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.classList.remove('show'); }, 2400);
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>

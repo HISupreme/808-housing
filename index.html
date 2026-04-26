@@ -382,19 +382,68 @@
     line-height: 1.6;
     margin-bottom: 12px;
   }
-  .modal-prompt {
-    background: var(--surface-2);
+  .answer-content {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
     border-radius: var(--radius-md);
-    padding: 12px;
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    padding: 14px 16px;
+    font-size: 15px;
+    line-height: 1.65;
     margin: 12px 0;
-    max-height: 240px;
+    max-height: 60vh;
     overflow-y: auto;
     color: var(--text);
     -webkit-overflow-scrolling: touch;
+    min-height: 80px;
+  }
+  .answer-content p { margin: 0 0 0.75em; }
+  .answer-content p:last-child { margin-bottom: 0; }
+  .answer-content ul, .answer-content ol { margin: 0.5em 0 0.75em; padding-left: 1.4em; }
+  .answer-content li { margin-bottom: 0.4em; }
+  .answer-content strong { font-weight: 600; }
+  .answer-content a { color: var(--info-fg); }
+  .answer-content .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.1em;
+    background: var(--info-fg);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes blink { to { visibility: hidden; } }
+  .answer-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+  .answer-loading-dots {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .answer-loading-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--text-3);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+  }
+  .answer-loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+  .answer-loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  .answer-error {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 12px 0;
   }
   .modal-actions {
     display: grid;
@@ -448,12 +497,12 @@
 <div class="container">
 
 <div class="prototype-banner">
-  <strong>Prototype.</strong> Not legal or financial advice. Always verify eligibility with the listed agency before applying.
+  <strong>Prototype.</strong> Not legal or financial advice. Always verify eligibility with the listed agency before applying. Income limits below reflect HUD FY2025 figures — FY2026 limits release May 1, 2026.
 </div>
 
 <header>
   <h1>808 Housing</h1>
-  <div class="subtitle">Find Hawaiʻi housing programs you may qualify for · 2025 HUD limits · 16 programs</div>
+  <div class="subtitle">Find Hawaiʻi housing programs you may qualify for · 22 programs · 4 counties</div>
 </header>
 
 <div class="panel">
@@ -516,24 +565,21 @@
 
 <footer>
   Built in Hawaiʻi as a free, private prototype. No tracking, no signup, no data collected.
-  Income limits sourced from HUD FY2025 HOME Income Limits and MTSP Income Limits, effective June 1, 2025 and April 1, 2025 respectively, for Honolulu MSA, Maui County, Hawaiʻi County, and Kauaʻi County.
+  Income limits sourced from HUD FY2025 HOME Income Limits and MTSP Income Limits, effective June 1, 2025 and April 1, 2025 respectively, for Honolulu MSA, Maui County, Hawaiʻi County, and Kauaʻi County. FY2026 limits release May 1, 2026.
+  HOTMA inflationary adjustments effective Jan 1, 2026: Section 8 net asset cap is $105,574; self-certification threshold $52,787.
   Verify eligibility with the listed agency before applying — limits update and program rules change.
 </footer>
 
 </div>
 
-<div id="prompt-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div id="answer-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="answer-title">
   <div class="modal">
-    <h2 id="modal-title">Get a personalized answer</h2>
-    <div class="modal-intro">
-      Tap a button below to copy the question and open a free chatbot. Paste the question in once it loads.
-    </div>
-    <div id="modal-prompt" class="modal-prompt" aria-label="Prompt text"></div>
-    <div class="modal-actions">
-      <button class="action-btn" data-link="claude">Copy & open Claude</button>
-      <button class="action-btn" data-link="chatgpt">Copy & open ChatGPT</button>
-      <button class="action-btn" data-link="gemini">Copy & open Gemini</button>
-      <button class="action-btn" data-link="copy">Just copy</button>
+    <h2 id="answer-title">Loading…</h2>
+    <div id="answer-content" class="answer-content" aria-live="polite"></div>
+    <div id="answer-error" class="answer-error" style="display: none;"></div>
+    <div id="answer-actions" class="modal-actions" style="display: none;">
+      <button class="action-btn" data-link="copy-answer">Copy answer</button>
+      <button class="action-btn" data-link="ask-followup">Ask another</button>
     </div>
     <button class="modal-close" id="modal-close-btn">Close</button>
   </div>
@@ -669,31 +715,41 @@
     return eligible.map(p => '- ' + p.name + ' (' + p.agency + ')').join('\n');
   }
 
-  // Action buttons (Explain, Checklist, etc.)
-  document.querySelectorAll('.action-btn[data-action]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const action = btn.dataset.action;
-      const prompts = {
-        explain: 'I am trying to figure out which Hawaiʻi housing programs I qualify for. Here is my situation:\n\n' + ctx() + '\n\nThe programs I appear to qualify for are:\n' + eligibleProgramsContext() + '\n\nPlease explain my eligibility results in plain, simple language. What is the most important thing I should do first this week? Be honest about realistic waitlist times.',
-        checklist: 'I want to apply for Hawaiʻi housing programs. My situation:\n\n' + ctx() + '\n\nThe top programs I qualify for:\n' + eligibleProgramsContext() + '\n\nPlease build me a complete application checklist. For each program, list the exact documents I need, where to apply, realistic waitlist times, and the most common reasons applications get rejected.',
-        rank: 'Help me prioritize Hawaiʻi housing applications. My situation:\n\n' + ctx() + '\n\nThe programs I qualify for:\n' + eligibleProgramsContext() + '\n\nRank these by what I should actually do this week vs this month vs this year. Be honest about waitlist times and likelihood of success. Don\'t be afraid to tell me if a program is technically open to me but unlikely to help in practice.',
-        translate: 'Translate my Hawaiʻi housing eligibility results into Ilocano, Tagalog, Marshallese, Chuukese, and ʻŌlelo Hawaiʻi. Use plain language a non-expert would understand.\n\nMy situation:\n' + ctx() + '\n\nPrograms I qualify for:\n' + eligibleProgramsContext()
-      };
-      openPromptModal(prompts[action]);
-    });
-  });
+  // Action buttons — call the API and stream answer inline
+  const QUESTION_TEMPLATES = {
+    explain: 'Please explain my eligibility results in plain, simple language. What is the most important thing I should do first this week? Be honest about realistic waitlist times.',
+    checklist: 'Please build me a complete application checklist for the top programs I qualify for. For each one, list the exact documents I need, where to apply, realistic waitlist times, and the most common reasons applications get rejected.',
+    rank: 'Rank the programs I qualify for by what I should actually do this week vs this month vs this year. Be honest about waitlist times and likelihood of success. Don\'t be afraid to tell me if a program is technically open to me but unlikely to help in practice.',
+    translate: 'Please translate my eligibility results into Ilocano, Tagalog, Marshallese, Chuukese, and ʻŌlelo Hawaiʻi. Use plain language a non-expert would understand. Show each translation clearly labeled.'
+  };
 
-  const modal = document.getElementById('prompt-modal');
-  const modalPrompt = document.getElementById('modal-prompt');
+  const TITLE_TEMPLATES = {
+    explain: 'Plain-language explanation',
+    checklist: 'Application checklist',
+    rank: 'What to do this week',
+    translate: 'Translated results'
+  };
+
+  const modal = document.getElementById('answer-modal');
+  const answerTitle = document.getElementById('answer-title');
+  const answerContent = document.getElementById('answer-content');
+  const answerError = document.getElementById('answer-error');
+  const answerActions = document.getElementById('answer-actions');
   const modalCloseBtn = document.getElementById('modal-close-btn');
 
-  function openPromptModal(text) {
-    modalPrompt.textContent = text;
+  let currentAbortController = null;
+  let lastAnswerText = '';
+
+  function openModal() {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
   function closeModal() {
+    if (currentAbortController) {
+      currentAbortController.abort();
+      currentAbortController = null;
+    }
     modal.classList.remove('open');
     document.body.style.overflow = '';
   }
@@ -701,48 +757,157 @@
   modalCloseBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-  // Modal action buttons — copy first, then open. This works on every mobile browser.
-  document.querySelectorAll('.action-btn[data-link]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const text = modalPrompt.textContent;
-      const link = btn.dataset.link;
+  // Minimal markdown renderer — bold, simple lists, paragraphs
+  function renderMarkdown(text) {
+    // Escape HTML first
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
 
-      // Always try to copy first
-      let copied = false;
-      try {
-        await navigator.clipboard.writeText(text);
-        copied = true;
-      } catch (e) {
-        // Fallback for older browsers
-        try {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          copied = true;
-        } catch (e2) { /* give up */ }
+    // Bold **text**
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+    // Convert lines into paragraphs and lists
+    const lines = html.split('\n');
+    const out = [];
+    let inList = null; // 'ul' | 'ol' | null
+    let para = [];
+
+    function flushPara() {
+      if (para.length > 0) {
+        out.push('<p>' + para.join('<br>') + '</p>');
+        para = [];
       }
+    }
+    function closeList() {
+      if (inList) {
+        out.push('</' + inList + '>');
+        inList = null;
+      }
+    }
 
-      if (link === 'copy') {
-        showToast(copied ? 'Copied — paste it into any chatbot' : 'Copy failed — long-press the text above to select');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        flushPara();
+        closeList();
+        continue;
+      }
+      const ulMatch = trimmed.match(/^[-*]\s+(.+)/);
+      const olMatch = trimmed.match(/^\d+[.)]\s+(.+)/);
+      if (ulMatch) {
+        flushPara();
+        if (inList !== 'ul') { closeList(); out.push('<ul>'); inList = 'ul'; }
+        out.push('<li>' + ulMatch[1] + '</li>');
+      } else if (olMatch) {
+        flushPara();
+        if (inList !== 'ol') { closeList(); out.push('<ol>'); inList = 'ol'; }
+        out.push('<li>' + olMatch[1] + '</li>');
+      } else {
+        closeList();
+        para.push(trimmed);
+      }
+    }
+    flushPara();
+    closeList();
+    return out.join('');
+  }
+
+  async function askClaude(action) {
+    answerTitle.textContent = TITLE_TEMPLATES[action] || 'Loading…';
+    answerContent.innerHTML = '<div class="answer-loading"><span class="answer-loading-dots"><span></span><span></span><span></span></span> Thinking…</div>';
+    answerError.style.display = 'none';
+    answerActions.style.display = 'none';
+    openModal();
+
+    if (currentAbortController) currentAbortController.abort();
+    currentAbortController = new AbortController();
+
+    let received = '';
+    lastAnswerText = '';
+
+    try {
+      const response = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          situation: ctx(),
+          eligible_programs: eligibleProgramsContext(),
+          question: QUESTION_TEMPLATES[action]
+        }),
+        signal: currentAbortController.signal
+      });
+
+      if (!response.ok) {
+        let errMsg = 'Something went wrong. Please try again.';
+        try {
+          const err = await response.json();
+          if (err.error) errMsg = err.error;
+        } catch (e) {}
+        showError(errMsg);
         return;
       }
 
-      // Open the chatbot homepage. User pastes the prompt.
-      const urls = {
-        claude: 'https://claude.ai/new',
-        chatgpt: 'https://chatgpt.com/',
-        gemini: 'https://gemini.google.com/app'
-      };
-      showToast(copied ? 'Copied — paste it once the page loads' : 'Long-press the text above to copy');
-      // Small delay so the toast shows before navigation
-      setTimeout(() => {
-        window.open(urls[link], '_blank', 'noopener,noreferrer');
-      }, 250);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      answerContent.innerHTML = '';
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        received += chunk;
+        buffer = received;
+        // Render incrementally with cursor
+        answerContent.innerHTML = renderMarkdown(buffer) + '<span class="cursor"></span>';
+        // Auto-scroll to bottom of answer area as text streams
+        answerContent.scrollTop = answerContent.scrollHeight;
+      }
+
+      // Final render without cursor
+      lastAnswerText = received;
+      answerContent.innerHTML = renderMarkdown(received);
+      answerActions.style.display = 'grid';
+
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user closed modal
+      console.error('Ask error:', e);
+      showError('Could not reach the server. Check your connection and try again.');
+    } finally {
+      currentAbortController = null;
+    }
+  }
+
+  function showError(msg) {
+    answerContent.innerHTML = '';
+    answerError.textContent = msg;
+    answerError.style.display = 'block';
+    answerActions.style.display = 'none';
+  }
+
+  document.querySelectorAll('.action-btn[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.action;
+      if (QUESTION_TEMPLATES[action]) askClaude(action);
+    });
+  });
+
+  // Modal action buttons — copy answer or ask another
+  document.querySelectorAll('.action-btn[data-link]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const link = btn.dataset.link;
+      if (link === 'copy-answer') {
+        try {
+          await navigator.clipboard.writeText(lastAnswerText);
+          showToast('Answer copied');
+        } catch (e) {
+          showToast('Copy failed — long-press the text to select');
+        }
+      } else if (link === 'ask-followup') {
+        closeModal();
+      }
     });
   });
 
@@ -811,7 +976,7 @@
         agency: 'Hawaiʻi Public Housing Authority (HPHA)',
         eligible: pctAMI <= 50 && wantsRent,
         why: pctAMI <= 50 ? 'Income at or below 50% AMI ($' + limits.vli_50.toLocaleString() + ')' : 'Income exceeds 50% AMI ($' + limits.vli_50.toLocaleString() + ')',
-        note: 'Waitlist closes most years — apply the moment it opens. Tenant pays 30% of income, voucher covers the rest.',
+        note: 'Waitlist closes most years — apply the moment it opens. Tenant pays 30% of income, voucher covers the rest. Note: Emergency Housing Vouchers (EHV) are winding down by end of 2026; if currently on EHV, ask HPHA about transition to standard HCV under Notice PIH 2025-19.',
         priority: pctAMI <= 30 ? 'highest' : 'high',
         url: 'https://hpha.hawaii.gov'
       },
@@ -847,7 +1012,7 @@
         agency: 'Department of Hawaiian Home Lands',
         eligible: flagsSet.has('native_hawaiian'),
         why: flagsSet.has('native_hawaiian') ? '50%+ Native Hawaiian ancestry confirmed' : 'Requires 50%+ Native Hawaiian ancestry',
-        note: '$1/year residential lease for 99 years. Average wait ~23 years — apply the day you turn 18.',
+        note: '$1/year residential lease for 99 years. ~30,000 on the waitlist statewide; over 2,100 beneficiaries have died waiting. Apply the day you turn 18 — also explore Section 184A loans on existing leases.',
         priority: 'foundational',
         url: 'https://dhhl.hawaii.gov'
       },
@@ -892,7 +1057,7 @@
         agency: 'State of Hawaiʻi + FEMA + Red Cross + Maui County',
         eligible: flagsSet.has('lahaina'),
         why: flagsSet.has('lahaina') ? 'Displaced by Aug 2023 Maui fires' : 'Requires fire-displacement status',
-        note: 'Stacked rental assistance, priority placement, direct lease programs. Time-limited — act quickly.',
+        note: 'FEMA Direct Housing extended to Feb 28, 2027 (final extension). Since March 2026, occupants pay 25% of FMR — but if income is at/below HUD very-low-income limit, the rent is $50/mo. Hoʻokumu Hou (Maui CDBG-DR) offers up to $1.2M for reconstruction; applications close August 2026. Disaster Case Management Program runs through ~Nov 2028.',
         priority: 'highest',
         url: 'https://www.mauirecovers.org'
       },
@@ -928,7 +1093,7 @@
         agency: 'Partners in Care (Oʻahu) / Bridging the Gap (neighbor islands)',
         eligible: flagsSet.has('currently_homeless') || flagsSet.has('homeless_risk'),
         why: (flagsSet.has('currently_homeless') || flagsSet.has('homeless_risk')) ? 'Homelessness or imminent risk' : 'Requires homeless or at-risk status',
-        note: 'Single intake point that routes to rapid rehousing, transitional housing, or permanent supportive housing.',
+        note: 'Single intake point that routes to rapid rehousing, transitional housing, or kauhale villages. Act 278 (effective Feb 2026) gives tenants 10 calendar days on pay-or-quit notices and a path to county mediation. Crisis: 988 (mental health), 808-768-2673 (Oʻahu CORE), 1-800-621-3362 (FEMA).',
         priority: flagsSet.has('currently_homeless') ? 'highest' : 'high',
         url: 'https://www.partnersincareoahu.org'
       },
@@ -949,6 +1114,60 @@
         note: 'Subsidized 33-year mortgage with payments as low as 1% effective rate. Big Island, rural Maui, Molokaʻi, Lānaʻi qualify.',
         priority: 'high',
         url: 'https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-direct-home-loans'
+      },
+      {
+        name: 'State Rent Supplement Program',
+        agency: 'HPHA via Catholic Charities Hawaiʻi',
+        eligible: pctAMI <= 80 && wantsRent,
+        why: pctAMI <= 80 ? 'Within 80% AMI cap' : 'Requires ≤80% AMI',
+        note: 'Up to $500/month rental supplement when Section 8 waitlists are closed — fills the gap. Paid directly to landlord. Apply through Catholic Charities, not HPHA directly.',
+        priority: pctAMI <= 50 ? 'high' : 'medium',
+        url: 'https://www.catholiccharitieshawaii.org/rent-supplement/'
+      },
+      {
+        name: 'Honolulu Down Payment Loan Program',
+        agency: 'City and County of Honolulu DHLM',
+        eligible: pctAMI <= 80 && wantsBuy && island === 'honolulu' && flagsSet.has('first_time_buyer'),
+        why: island !== 'honolulu' ? 'Oʻahu only' : (pctAMI <= 80 && flagsSet.has('first_time_buyer')) ? 'First-time buyer + ≤80% AMI on Oʻahu' : 'Requires first-time buyer + ≤80% AMI on Oʻahu',
+        note: '$40,000 zero-interest down payment loan, up to $20,000 forgivable over 10 years if you stay in the home. Apply through the Honolulu Department of Housing and Land Management.',
+        priority: 'high',
+        url: 'https://www.honolulu.gov/dhlm'
+      },
+      {
+        name: 'Kauaʻi Home Buyer Loan Program',
+        agency: 'County of Kauaʻi Housing Agency',
+        eligible: pctAMI <= 140 && wantsBuy && island === 'kauai' && flagsSet.has('first_time_buyer'),
+        why: island !== 'kauai' ? 'Kauaʻi only' : (pctAMI <= 140 && flagsSet.has('first_time_buyer')) ? 'First-time buyer on Kauaʻi within income cap' : 'Requires first-time buyer + within income cap on Kauaʻi',
+        note: 'Primary mortgage up to $450,000 plus GAP loan up to $150,000 for down payment and closing costs. One of the most generous county home buyer programs in the state.',
+        priority: 'high',
+        url: 'https://www.kauai.gov/Housing'
+      },
+      {
+        name: 'Section 184A Native Hawaiian Loan Guarantee',
+        agency: 'HUD via approved lenders',
+        eligible: flagsSet.has('native_hawaiian') && wantsBuy,
+        why: flagsSet.has('native_hawaiian') ? 'Native Hawaiian (any blood quantum under NAHASDA)' : 'Requires Native Hawaiian status',
+        note: '100% federal guarantee, 1.25% funding fee, 2.25% down (1.25% on loans under $50K). Works on DHHL leases AND fee-simple property. Approved lenders: American Savings Bank, Bank of Hawaii, First Hawaiian Bank, Hawaiʻi State FCU, Hawaiʻi Community Lending. Most underused Native Hawaiian wealth-building tool.',
+        priority: 'foundational',
+        url: 'https://www.hud.gov/program_offices/public_indian_housing/ih/homeownership/184a'
+      },
+      {
+        name: 'OHA Access to Home Ownership',
+        agency: 'Office of Hawaiian Affairs + American Savings Bank',
+        eligible: flagsSet.has('native_hawaiian') && wantsBuy && flagsSet.has('first_time_buyer'),
+        why: flagsSet.has('native_hawaiian') && flagsSet.has('first_time_buyer') ? 'Native Hawaiian first-time buyer' : 'Requires Native Hawaiian first-time buyer status',
+        note: 'OHA pledges up to 17% of home value, enabling 3% down with NO PMI. For Native Hawaiian first-time buyers off-DHHL. Pair with Section 184A or other loan products.',
+        priority: 'high',
+        url: 'https://www.oha.org/aho/'
+      },
+      {
+        name: 'VA Aid & Attendance / Housebound Pension',
+        agency: 'Department of Veterans Affairs',
+        eligible: flagsSet.has('veteran') && flagsSet.has('senior'),
+        why: (flagsSet.has('veteran') && flagsSet.has('senior')) ? 'Veteran 62+ status' : 'Requires veteran + senior (or disability) status',
+        note: 'Up to $2,424/month for single veteran, $2,874/month married — pays for in-home care, assisted living, or nursing home. Most underclaimed senior veteran benefit. Surviving spouses also eligible (DIC).',
+        priority: 'high',
+        url: 'https://www.va.gov/pension/aid-attendance-housebound/'
       }
     ];
   }
@@ -1035,14 +1254,55 @@
     const notEligible = programs.filter(p => !p.eligible);
 
     const results = document.getElementById('results');
+
+    // Build tools callout — surface companion tools when situation matches
+    let toolsHtml = '';
+    const tools = [];
+    if (flags.has('lahaina')) {
+      tools.push({
+        title: 'FEMA rent calculator',
+        body: 'If you\'re still in FEMA Direct Housing on Maui, find out if you qualify for the $50/month low-income rate.',
+        href: '/fema-rent',
+        cta: 'Calculate my FEMA rent →'
+      });
+    }
+    if (flags.has('native_hawaiian')) {
+      tools.push({
+        title: 'Kuleana tax exemption',
+        body: 'If your family owns ancestral kuleana land, you may pay $0–$300/year in property tax instead of thousands.',
+        href: '/kuleana',
+        cta: 'Walk through kuleana filing →'
+      });
+    }
+    if (flags.has('senior')) {
+      tools.push({
+        title: 'Senior property tax exemption',
+        body: 'If you own your home and you\'re 60+, you may be paying too much property tax. Find every exemption you qualify for.',
+        href: '/senior-property-tax',
+        cta: 'Calculate my savings →'
+      });
+    }
+    if (tools.length > 0) {
+      toolsHtml = '<div style="margin-bottom: 1.25rem;">' +
+        '<div class="results-heading" style="margin-bottom: 10px;">Tools for your situation</div>' +
+        tools.map(t =>
+          '<a href="' + t.href + '" style="display: block; background: var(--info-bg); color: var(--info-fg); border-radius: var(--radius-lg); padding: 1rem 1.125rem; margin-bottom: 8px; text-decoration: none;">' +
+            '<div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">' + t.title + '</div>' +
+            '<div style="font-size: 13px; line-height: 1.55; opacity: 0.9; margin-bottom: 6px;">' + t.body + '</div>' +
+            '<div style="font-size: 13px; font-weight: 500;">' + t.cta + '</div>' +
+          '</a>'
+        ).join('') +
+        '</div>';
+    }
+
     if (eligible.length === 0) {
-      results.innerHTML =
+      results.innerHTML = toolsHtml +
         '<div class="alert">' +
           '<div class="alert-title">No income-restricted programs matched</div>' +
           '<div class="alert-body">At ' + pctAMI + '% AMI you are above the income cap for the programs in this database. Toggle situation flags above (first-time buyer, veteran, etc.) to surface other options. Affordable rent at your income is roughly $' + affordableRent.toLocaleString() + '/month.</div>' +
         '</div>';
     } else {
-      results.innerHTML =
+      results.innerHTML = toolsHtml +
         '<div class="results-heading">' + eligible.length + ' program' + (eligible.length === 1 ? '' : 's') + ' you may qualify for</div>' +
         '<div class="program-list">' +
           eligible.map(p => renderProgram(p, true)).join('') +
