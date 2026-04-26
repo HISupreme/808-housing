@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a18" media="(prefers-color-scheme: dark)">
+<title>Senior Property Tax Calculator — 808 Housing</title>
+<meta name="description" content="If you're a kupuna who owns your home in Hawaiʻi, you may be paying too much property tax. Find every exemption you qualify for in 3 minutes.">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://808housing.org/senior-property-tax">
+<meta property="og:site_name" content="808 Housing">
+<meta property="og:title" content="Senior Property Tax Calculator — 808 Housing">
+<meta property="og:description" content="Kupuna in Hawaiʻi: find every property tax exemption you qualify for and your real annual savings.">
+<meta property="og:image" content="https://808housing.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="808 Housing — a free civic tool for Hawaiʻi residents">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Senior Property Tax Calculator — 808 Housing">
+<meta name="twitter:description" content="Kupuna in Hawaiʻi: find every property tax exemption you qualify for and your real annual savings.">
+<meta name="twitter:image" content="https://808housing.org/og-image.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏝%3C/text%3E%3C/svg%3E">
+
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f3f1ea;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.18);
+    --text: #1a1a18;
+    --text-2: #5f5e5a;
+    --text-3: #888780;
+    --info-bg: #E6F1FB;
+    --info-fg: #0C447C;
+    --info-border: #85B7EB;
+    --success-bg: #EAF3DE;
+    --success-fg: #27500A;
+    --danger-bg: #FCEBEB;
+    --danger-fg: #791F1F;
+    --warning-bg: #FAEEDA;
+    --warning-fg: #633806;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --tap-min: 44px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18;
+      --surface: #232321;
+      --surface-2: #2c2c2a;
+      --border: rgba(255,255,255,0.1);
+      --border-strong: rgba(255,255,255,0.22);
+      --text: #f5f4ef;
+      --text-2: #b4b2a9;
+      --text-3: #888780;
+      --info-bg: #042C53;
+      --info-fg: #B5D4F4;
+      --info-border: #185FA5;
+      --success-bg: #173404;
+      --success-fg: #C0DD97;
+      --danger-bg: #501313;
+      --danger-fg: #F7C1C1;
+      --warning-bg: #412402;
+      --warning-fg: #FAC775;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  body { overflow-x: hidden; }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+  @media (min-width: 600px) {
+    .container { padding: 2rem 1.25rem 4rem; }
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+  }
+  .nav a {
+    color: var(--text-2);
+    text-decoration: none;
+  }
+  .nav a:hover { text-decoration: underline; }
+  header { margin-bottom: 1.5rem; padding-top: 0.25rem; }
+  h1 {
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  @media (min-width: 600px) { h1 { font-size: 30px; } }
+  .subtitle {
+    font-size: 16px;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+  .progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .progress-step {
+    flex: 1;
+    height: 4px;
+    background: var(--surface-2);
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .progress-step.active { background: var(--info-fg); }
+  .progress-step.complete { background: var(--success-fg); }
+  .step-label {
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 12px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .step-prose {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .step-prose p { margin: 0 0 0.875em; }
+  .step-prose p:last-child { margin-bottom: 0; }
+  .step-prose strong { color: var(--text); }
+  .panel {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .panel h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+  }
+  .field {
+    margin-bottom: 1rem;
+  }
+  .field:last-child { margin-bottom: 0; }
+  label.field-label {
+    font-size: 14px;
+    color: var(--text-2);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  select, input[type="text"], input[type="number"] {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    background: var(--surface);
+    color: var(--text);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    font-size: 17px;
+    font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22292.4%22 height%3D%22292.4%22%3E%3Cpath fill%3D%22%23888780%22 d%3D%22M287 69.4a17.6 17.6 0 0 0-13-5.4H18.4c-5 0-9.3 1.8-12.9 5.4A17.6 17.6 0 0 0 0 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95c3.5-3.5 5.4-7.8 5.4-12.8 0-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    padding-right: 36px;
+  }
+  select:focus, input:focus {
+    outline: 2px solid var(--info-border);
+    outline-offset: -1px;
+  }
+  .help-text {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .choice-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    min-height: 56px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    touch-action: manipulation;
+    line-height: 1.4;
+    width: 100%;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .choice-btn:hover { border-color: var(--info-border); }
+  .choice-btn.active {
+    background: var(--info-bg);
+    border-color: var(--info-border);
+    color: var(--info-fg);
+  }
+  .choice-btn .choice-detail {
+    font-size: 13px;
+    color: var(--text-3);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .choice-btn.active .choice-detail {
+    color: var(--info-fg);
+    opacity: 0.85;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+  .nav-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    min-height: 50px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    touch-action: manipulation;
+    flex: 1;
+  }
+  .nav-btn.primary {
+    background: var(--info-fg);
+    color: var(--bg);
+    border-color: var(--info-fg);
+    font-weight: 500;
+  }
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .savings-card {
+    background: var(--success-bg);
+    color: var(--success-fg);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .savings-card .savings-amount {
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 8px 0;
+    letter-spacing: -0.02em;
+  }
+  .savings-card .savings-detail {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .info-card {
+    background: var(--info-bg);
+    color: var(--info-fg);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .warning-card {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .breakdown {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    font-size: 15px;
+    line-height: 1.4;
+    border-bottom: 0.5px dashed var(--border);
+  }
+  .breakdown-row:last-of-type { border-bottom: none; }
+  .breakdown-row.total {
+    border-top: 1px solid var(--border-strong);
+    margin-top: 6px;
+    padding-top: 12px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .breakdown-label { color: var(--text-2); flex: 1; padding-right: 12px; }
+  .breakdown-value { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .checklist {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    margin: 1rem 0;
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    font-size: 15px;
+    line-height: 1.55;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item::before {
+    content: '☐';
+    margin-right: 12px;
+    font-size: 20px;
+    color: var(--text-3);
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .contacts {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .contacts h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+  }
+  .contact-item {
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-item strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+  .contact-item a {
+    color: var(--info-fg);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .contact-item a:active { text-decoration: underline; }
+  .actions-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  @media (min-width: 480px) {
+    .actions-row { grid-template-columns: 1fr 1fr; }
+  }
+  .action-btn {
+    background: var(--surface);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    min-height: 50px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    touch-action: manipulation;
+    line-height: 1.3;
+  }
+  footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.65;
+  }
+  footer a { color: var(--text-2); }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    z-index: 2000;
+    transition: transform 0.25s ease-out;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .currency {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="nav">
+  <a href="/">← 808 Housing home</a>
+  <span style="color: var(--text-3);">Senior Property Tax</span>
+</div>
+
+<header>
+  <h1>Senior property tax exemption</h1>
+  <div class="subtitle">If you own your home in Hawaiʻi and you're 60 or older, you probably qualify for a bigger property tax break than you're getting. This 3-minute walkthrough shows what you'd save and how to file.</div>
+</header>
+
+<div class="progress" aria-label="Progress">
+  <div class="progress-step active" data-step="1"></div>
+  <div class="progress-step" data-step="2"></div>
+  <div class="progress-step" data-step="3"></div>
+  <div class="progress-step" data-step="4"></div>
+</div>
+
+<div id="step-content"></div>
+
+<footer>
+  Built for kupuna in Hawaiʻi as a free, private tool. No tracking, no signup, no data collected. Tax rates and exemption amounts reflect FY2025-2026 published by Honolulu, Maui, Hawaiʻi, and Kauaʻi counties. Numbers shown are estimates — actual savings depend on your assessed value and tier. Not legal or financial advice. For free help filing, call AARP Foundation Property Tax-Aide at 1-888-227-7669 or your county tax office. Filing deadlines: Honolulu and Kauaʻi Sept 30, Maui Dec 31, Hawaiʻi Dec 31 or June 30.
+</footer>
+
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Per-county data — FY 2025-2026 figures
+  // Sources: county Real Property Tax websites, AARP Foundation Property Tax-Aide, Grassroot Institute
+  const COUNTIES = {
+    honolulu: {
+      name: 'Honolulu (Oʻahu)',
+      base_exemption: 120000,
+      senior_brackets: [
+        { min_age: 0, max_age: 64, exemption: 120000 },
+        { min_age: 65, max_age: 200, exemption: 160000 }
+      ],
+      tax_rate: 3.50,  // per $1,000 owner-occupied
+      deadline: 'September 30',
+      form: 'Form E-8-10.3 (Claim for Home Exemption)',
+      office: 'Real Property Assessment Division',
+      phone: '808-768-3799',
+      email: 'bfsrpmailbox@honolulu.gov',
+      website: 'https://realproperty.honolulu.gov',
+      address: '842 Bethel Street, Basement, Honolulu HI 96813',
+      tax_credit_note: 'Honolulu also offers the Real Property Tax Credit, which caps your taxes at 3% of household income if income is ≤$100K (under 60) or ≤$140K (65+). File annually by Sept 30.'
+    },
+    maui: {
+      name: 'Maui',
+      base_exemption: 300000,
+      senior_brackets: [
+        { min_age: 0, max_age: 200, exemption: 300000 }
+      ],
+      tax_rate: 1.80,  // per $1,000 owner-occupied (Tier 1, ≤$1M)
+      deadline: 'December 31',
+      form: 'Maui Home Exemption Application',
+      office: 'Maui County Real Property Assessment',
+      phone: '808-270-7297',
+      email: 'rpassessment@mauicounty.gov',
+      website: 'https://www.mauicounty.gov/2008/Real-Property-Assessment',
+      address: '110 ʻAlaʻihi Street, Suite 210, Kahului HI 96732',
+      tax_credit_note: 'Maui also runs the Circuit Breaker — if your property tax exceeds 2% of gross income (up to $8,200), the county pays the difference. File August 1–December 31 every year.'
+    },
+    hawaii: {
+      name: 'Hawaiʻi (Big Island)',
+      base_exemption: 50000,
+      senior_brackets: [
+        { min_age: 0, max_age: 59, exemption: 50000 },
+        { min_age: 60, max_age: 64, exemption: 85000 },
+        { min_age: 65, max_age: 69, exemption: 90000 },
+        { min_age: 70, max_age: 74, exemption: 105000 },
+        { min_age: 75, max_age: 200, exemption: 110000 }
+      ],
+      tax_rate: 5.95,  // per $1,000 homeowner class
+      deadline: 'December 31 or June 30',
+      form: 'RP Form 19-71 (Claim for Home Exemption)',
+      office: 'Hawaiʻi County Real Property Tax Office',
+      phone: '808-961-8201',
+      email: 'cohrpt@hawaiicounty.gov',
+      website: 'https://www.hawaiipropertytax.com',
+      address: '101 Pauahi Street, Suite 4, Hilo HI 96720',
+      tax_credit_note: 'Hawaiʻi County also adds 20% of assessed value (capped at $100,000) to your exemption — it stacks on top of the age-based amount.',
+      additional_pct_exemption: 0.20,
+      additional_pct_cap: 100000
+    },
+    kauai: {
+      name: 'Kauaʻi',
+      base_exemption: 220000,
+      senior_brackets: [
+        { min_age: 0, max_age: 59, exemption: 220000 },
+        { min_age: 60, max_age: 69, exemption: 240000 },
+        { min_age: 70, max_age: 200, exemption: 260000 }
+      ],
+      tax_rate: 2.59,  // per $1,000 owner-occupied (Homestead)
+      deadline: 'September 30',
+      form: 'Kauaʻi Home Exemption Application',
+      office: 'Kauaʻi Real Property Assessment',
+      phone: '808-241-4224',
+      email: 'rpassessment@kauai.gov',
+      website: 'https://www.kauai.gov/Government/Departments-Agencies/Finance/Real-Property-Tax',
+      address: '4444 Rice Street, Suite A-454, Līhuʻe HI 96766',
+      tax_credit_note: 'Kauaʻi also offers the Home Preservation Tax Limitation — if income is ≤80% of Kauaʻi median, your tax is capped at 3% of income. Filed annually by Sept 30.'
+    }
+  };
+
+  const state = {
+    step: 1,
+    county: null,
+    age: null,
+    assessed_value: null,
+    has_exemption: null,
+    disability_flags: new Set()
+  };
+
+  const stepContent = document.getElementById('step-content');
+  const progress = document.querySelectorAll('.progress-step');
+
+  function updateProgress() {
+    progress.forEach((el, i) => {
+      const stepNum = i + 1;
+      el.classList.remove('active', 'complete');
+      if (stepNum < state.step) el.classList.add('complete');
+      else if (stepNum === state.step) el.classList.add('active');
+    });
+  }
+
+  function format(n) {
+    return '$' + Math.round(n).toLocaleString();
+  }
+
+  function getExemption(county, age) {
+    const data = COUNTIES[county];
+    for (const bracket of data.senior_brackets) {
+      if (age >= bracket.min_age && age <= bracket.max_age) {
+        return bracket.exemption;
+      }
+    }
+    return data.base_exemption;
+  }
+
+  function calculateTax(county, age, assessed) {
+    const data = COUNTIES[county];
+    let exemption = getExemption(county, age);
+
+    // Hawaiʻi County also adds 20% of assessed value (capped at $100K) on top
+    let additionalExemption = 0;
+    if (data.additional_pct_exemption) {
+      additionalExemption = Math.min(
+        assessed * data.additional_pct_exemption,
+        data.additional_pct_cap
+      );
+    }
+
+    // Disability adders (rough modeling — varies by county)
+    let disabilityExemption = 0;
+    if (state.disability_flags.has('totally_disabled_veteran')) {
+      // Totally disabled veterans: full exemption (except minimum tax) in all counties
+      return {
+        exemption: assessed,
+        additional: 0,
+        disability: 0,
+        taxable: 0,
+        tax: 100,  // approximate minimum tax
+        is_veteran_full: true
+      };
+    }
+    if (state.disability_flags.has('totally_disabled')) {
+      disabilityExemption = 50000;  // approximation across counties
+    }
+    if (state.disability_flags.has('blind_deaf')) {
+      disabilityExemption += 25000;  // approximation
+    }
+
+    const totalExemption = exemption + additionalExemption + disabilityExemption;
+    const taxable = Math.max(0, assessed - totalExemption);
+    const tax = (taxable / 1000) * data.tax_rate;
+
+    return {
+      exemption: exemption,
+      additional: additionalExemption,
+      disability: disabilityExemption,
+      taxable: taxable,
+      tax: tax,
+      is_veteran_full: false
+    };
+  }
+
+  function render() {
+    updateProgress();
+    if (state.step === 1) renderStep1();
+    else if (state.step === 2) renderStep2();
+    else if (state.step === 3) renderStep3();
+    else if (state.step === 4) renderStep4();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderStep1() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 1 of 4</div>
+      <h2 class="step-title">Where is your home?</h2>
+
+      <div class="step-prose">
+        <p>Each county sets its own property tax exemptions and rates. Tell us where your home is so we can show you the right numbers.</p>
+      </div>
+
+      <div class="panel">
+        <div class="choice-group" id="county-choices">
+          <button class="choice-btn" data-county="honolulu">
+            Honolulu (Oʻahu)
+            <div class="choice-detail">$120K base exemption · $160K at 65+ · $3.50/$1,000 rate</div>
+          </button>
+          <button class="choice-btn" data-county="maui">
+            Maui (incl. Molokaʻi, Lānaʻi)
+            <div class="choice-detail">$300K base exemption · $1.80/$1,000 rate (lowest in HI)</div>
+          </button>
+          <button class="choice-btn" data-county="hawaii">
+            Hawaiʻi (Big Island)
+            <div class="choice-detail">$50K–$110K by age, +20% of value · $5.95/$1,000 rate</div>
+          </button>
+          <button class="choice-btn" data-county="kauai">
+            Kauaʻi
+            <div class="choice-detail">$220K–$260K by age · $2.59/$1,000 rate</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn primary" id="next1" disabled>Continue →</button>
+      </div>
+    `;
+
+    const buttons = document.querySelectorAll('#county-choices .choice-btn');
+    buttons.forEach(btn => {
+      if (state.county === btn.dataset.county) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.county = btn.dataset.county;
+        document.getElementById('next1').disabled = false;
+      });
+    });
+    if (state.county) document.getElementById('next1').disabled = false;
+
+    document.getElementById('next1').addEventListener('click', () => { state.step = 2; render(); });
+  }
+
+  function renderStep2() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 2 of 4</div>
+      <h2 class="step-title">How old is the homeowner?</h2>
+
+      <div class="step-prose">
+        <p>The exemption increases with age. If you're married and you both own the home, use whichever spouse is older.</p>
+      </div>
+
+      <div class="panel">
+        <div class="field">
+          <label class="field-label" for="age">Age (or your spouse's age, whichever is older)</label>
+          <input type="number" id="age" min="18" max="120" step="1" inputmode="numeric" placeholder="e.g. 67" value="${state.age || ''}" />
+          <div class="help-text">If you'll turn the next age bracket by June 30, use that age.</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" id="back2">← Back</button>
+        <button class="nav-btn primary" id="next2" disabled>Continue →</button>
+      </div>
+    `;
+
+    const ageInput = document.getElementById('age');
+    const nextBtn = document.getElementById('next2');
+
+    function updateNext() {
+      const v = parseInt(ageInput.value, 10);
+      nextBtn.disabled = !(v >= 18 && v <= 120);
+    }
+    ageInput.addEventListener('input', updateNext);
+    updateNext();
+
+    document.getElementById('back2').addEventListener('click', () => { state.step = 1; render(); });
+    nextBtn.addEventListener('click', () => {
+      state.age = parseInt(ageInput.value, 10);
+      state.step = 3;
+      render();
+    });
+  }
+
+  function renderStep3() {
+    stepContent.innerHTML = `
+      <div class="step-label">Step 3 of 4</div>
+      <h2 class="step-title">A few more details</h2>
+
+      <div class="step-prose">
+        <p>This helps us calculate your exact savings and surface any extra exemptions you qualify for.</p>
+      </div>
+
+      <div class="panel">
+        <div class="field">
+          <label class="field-label" for="assessed">What's your home's assessed value?</label>
+          <input type="number" id="assessed" min="0" step="10000" inputmode="numeric" placeholder="e.g. 650000" value="${state.assessed_value || ''}" />
+          <div class="help-text">Look at your most recent property tax assessment notice. If you don't have it, estimate the home's market value — it's usually close.</div>
+        </div>
+
+        <div class="field" style="margin-top: 20px;">
+          <label class="field-label">Do you currently have a home exemption on file?</label>
+          <div class="choice-group" id="has-exempt">
+            <button class="choice-btn" data-answer="yes">
+              Yes, I file every year and get the basic home exemption
+              <div class="choice-detail">We'll show what you should be getting based on your age</div>
+            </button>
+            <button class="choice-btn" data-answer="basic">
+              I think I have one, but I'm not sure of the amount
+              <div class="choice-detail">We'll calculate what you should qualify for</div>
+            </button>
+            <button class="choice-btn" data-answer="no">
+              I've never filed for any exemption
+              <div class="choice-detail">You're likely overpaying — let's see by how much</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: 20px;">
+          <label class="field-label">Any of these apply? (Optional — adds to your exemption)</label>
+          <div class="choice-group" id="disabilities">
+            <button class="choice-btn" data-flag="totally_disabled_veteran">
+              Totally disabled veteran (100% service-connected)
+              <div class="choice-detail">Full exemption from property tax in all counties (except minimum)</div>
+            </button>
+            <button class="choice-btn" data-flag="totally_disabled">
+              Totally disabled (Social Security / state determination)
+              <div class="choice-detail">Adds ~$50K to exemption (varies by county)</div>
+            </button>
+            <button class="choice-btn" data-flag="blind_deaf">
+              Blind, deaf, or has Hansen's disease
+              <div class="choice-detail">Adds ~$25K to exemption</div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" id="back3">← Back</button>
+        <button class="nav-btn primary" id="next3" disabled>See my savings →</button>
+      </div>
+    `;
+
+    const assessedInput = document.getElementById('assessed');
+    const exemptBtns = document.querySelectorAll('#has-exempt .choice-btn');
+    const disBtns = document.querySelectorAll('#disabilities .choice-btn');
+    const nextBtn = document.getElementById('next3');
+
+    exemptBtns.forEach(btn => {
+      if (state.has_exemption === btn.dataset.answer) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        exemptBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.has_exemption = btn.dataset.answer;
+        updateNext();
+      });
+    });
+
+    disBtns.forEach(btn => {
+      if (state.disability_flags.has(btn.dataset.flag)) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        const flag = btn.dataset.flag;
+        if (state.disability_flags.has(flag)) {
+          state.disability_flags.delete(flag);
+          btn.classList.remove('active');
+        } else {
+          state.disability_flags.add(flag);
+          btn.classList.add('active');
+        }
+      });
+    });
+
+    function updateNext() {
+      const v = parseFloat(assessedInput.value);
+      nextBtn.disabled = !(v > 0 && state.has_exemption);
+    }
+    assessedInput.addEventListener('input', updateNext);
+    updateNext();
+
+    document.getElementById('back3').addEventListener('click', () => { state.step = 2; render(); });
+    nextBtn.addEventListener('click', () => {
+      state.assessed_value = parseFloat(assessedInput.value);
+      state.step = 4;
+      render();
+    });
+  }
+
+  function renderStep4() {
+    const county = COUNTIES[state.county];
+    const calc = calculateTax(state.county, state.age, state.assessed_value);
+
+    // What they're paying now (best estimate based on what they said)
+    let currentTax;
+    if (state.has_exemption === 'no') {
+      // No exemption at all — full assessed value, owner-occupied rate
+      currentTax = (state.assessed_value / 1000) * county.tax_rate;
+    } else if (state.has_exemption === 'basic') {
+      // Have basic but not age-tiered — use base exemption only
+      currentTax = ((state.assessed_value - county.base_exemption) / 1000) * county.tax_rate;
+    } else {
+      // 'yes' — assume they have age-appropriate exemption already
+      currentTax = calc.tax;
+    }
+
+    const annualSavings = Math.max(0, currentTax - calc.tax);
+    const tenYearSavings = annualSavings * 10;
+    const correctExemption = getExemption(state.county, state.age);
+
+    let savingsHtml = '';
+    if (annualSavings > 100) {
+      savingsHtml = `
+        <div class="savings-card">
+          <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; opacity: 0.85;">You may be overpaying by</div>
+          <div class="savings-amount currency">${format(annualSavings)}<span style="font-size: 18px; font-weight: 400; opacity: 0.8;"> per year</span></div>
+          <div class="savings-detail">That's about <strong>${format(tenYearSavings)} over the next 10 years</strong>. The fix is filing the right paperwork once with your county.</div>
+        </div>
+      `;
+    } else if (calc.is_veteran_full) {
+      savingsHtml = `
+        <div class="savings-card">
+          <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; opacity: 0.85;">As a totally disabled veteran</div>
+          <div class="savings-amount currency">$0<span style="font-size: 18px; font-weight: 400; opacity: 0.8;"> property tax</span></div>
+          <div class="savings-detail">You're entitled to a <strong>full property tax exemption</strong> in ${county.name} (except a small minimum tax, usually $100/year). If you're paying more than that, file the disabled veteran exemption form immediately.</div>
+        </div>
+      `;
+    } else {
+      savingsHtml = `
+        <div class="savings-card" style="background: var(--info-bg); color: var(--info-fg);">
+          <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; opacity: 0.85;">Looks like you're set</div>
+          <div class="savings-amount currency">${format(calc.tax)}<span style="font-size: 18px; font-weight: 400; opacity: 0.8;"> per year</span></div>
+          <div class="savings-detail">Based on what you told us, you're already getting roughly the right exemption for your age and situation. Worth verifying with your county just to be sure.</div>
+        </div>
+      `;
+    }
+
+    let incomeNote = '';
+    if (county.tax_credit_note) {
+      incomeNote = `
+        <div class="info-card">
+          <strong>One more thing to check:</strong><br>
+          ${county.tax_credit_note}
+        </div>
+      `;
+    }
+
+    stepContent.innerHTML = `
+      <div class="step-label">Step 4 of 4 — Your results</div>
+      <h2 class="step-title">${county.name}</h2>
+
+      ${savingsHtml}
+
+      <div class="panel">
+        <h2>How the math works</h2>
+        <div class="breakdown">
+          <div class="breakdown-row">
+            <div class="breakdown-label">Home assessed value</div>
+            <div class="breakdown-value currency">${format(state.assessed_value)}</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Age-based home exemption (age ${state.age})</div>
+            <div class="breakdown-value currency">−${format(calc.exemption)}</div>
+          </div>
+          ${calc.additional > 0 ? `
+            <div class="breakdown-row">
+              <div class="breakdown-label">Additional 20% exemption (Big Island)</div>
+              <div class="breakdown-value currency">−${format(calc.additional)}</div>
+            </div>
+          ` : ''}
+          ${calc.disability > 0 ? `
+            <div class="breakdown-row">
+              <div class="breakdown-label">Disability exemption</div>
+              <div class="breakdown-value currency">−${format(calc.disability)}</div>
+            </div>
+          ` : ''}
+          <div class="breakdown-row">
+            <div class="breakdown-label">Taxable value</div>
+            <div class="breakdown-value currency">${format(calc.taxable)}</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Tax rate (per $1,000)</div>
+            <div class="breakdown-value currency">$${county.tax_rate.toFixed(2)}</div>
+          </div>
+          <div class="breakdown-row total">
+            <div class="breakdown-label">Your annual tax should be</div>
+            <div class="breakdown-value currency">${calc.is_veteran_full ? '~$100 (minimum)' : format(calc.tax)}</div>
+          </div>
+        </div>
+      </div>
+
+      ${incomeNote}
+
+      ${state.has_exemption !== 'yes' ? `
+        <div class="warning-card">
+          <strong>You need to file the exemption application.</strong> This is the one-time form that tells the county you live in the home and qualify for the lower rate. Without it, you're being taxed as if the home were an investment property.
+        </div>
+      ` : ''}
+
+      <div class="panel">
+        <h2>What to do</h2>
+        <div class="checklist">
+          ${state.has_exemption === 'no' ? `
+            <div class="checklist-item">File the basic <strong>${county.form}</strong> with your county before <strong>${county.deadline}</strong>.</div>
+            <div class="checklist-item">Provide proof of birth date so the county uses your age-based exemption automatically.</div>
+          ` : ''}
+          ${state.has_exemption === 'basic' ? `
+            <div class="checklist-item">Verify your county has your birth date on file. Call ${county.phone} and ask "is my date of birth on record?"</div>
+            <div class="checklist-item">If not, send them a copy of your driver's license or birth certificate before <strong>${county.deadline}</strong>.</div>
+          ` : ''}
+          ${state.disability_flags.has('totally_disabled_veteran') ? `
+            <div class="checklist-item">File the <strong>Totally Disabled Veteran exemption</strong> with your VA disability rating letter (100% service-connected).</div>
+          ` : ''}
+          ${state.disability_flags.has('totally_disabled') ? `
+            <div class="checklist-item">File the <strong>Totally Disabled exemption</strong> with a physician's certification or your Social Security disability award letter.</div>
+          ` : ''}
+          ${state.disability_flags.has('blind_deaf') ? `
+            <div class="checklist-item">File the <strong>Blind/Deaf/Hansen's exemption</strong> with a physician's certification.</div>
+          ` : ''}
+          ${county.tax_credit_note ? `
+            <div class="checklist-item">Look into the income-based tax relief mentioned above — it can stack on top of the home exemption.</div>
+          ` : ''}
+          <div class="checklist-item">Need help? Call <strong>AARP Foundation Property Tax-Aide</strong> at 1-888-227-7669. Free help, in English or with translators available.</div>
+        </div>
+      </div>
+
+      <div class="contacts">
+        <h2>Who to contact</h2>
+        <div class="contact-item">
+          <strong>${county.office}</strong>
+          ${county.address}
+          <br><a href="tel:${county.phone.replace(/-/g, '')}">${county.phone}</a> · <a href="mailto:${county.email}">${county.email}</a>
+          <br><a href="${county.website}" target="_blank" rel="noopener">Visit county tax website →</a>
+        </div>
+        <div class="contact-item">
+          <strong>AARP Foundation Property Tax-Aide (free help)</strong>
+          Free help understanding and filing exemptions for older adults.
+          <br><a href="tel:18882277669">1-888-227-7669</a>
+        </div>
+        <div class="contact-item">
+          <strong>Hawaiʻi Tax Help (free volunteer tax preparers)</strong>
+          Free help with state and federal returns — also useful for property tax circuit-breaker filings.
+          <br><a href="https://hawaiitaxhelp.org" target="_blank" rel="noopener">hawaiitaxhelp.org</a>
+        </div>
+        <div class="contact-item">
+          <strong>Aloha United Way 211</strong>
+          Free routing for everything else — Medicare, Kupuna Care, food, transportation.
+          <br><a href="tel:211">Dial 211</a> or text your zip to 211211
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button class="action-btn" id="copy-plan">Copy my filing plan</button>
+        <button class="action-btn" id="share-page">Share with ʻohana</button>
+      </div>
+
+      <div class="nav-buttons" style="margin-top: 1rem;">
+        <button class="nav-btn" id="back4">← Back</button>
+        <button class="nav-btn" id="restart">Start over</button>
+      </div>
+    `;
+
+    document.getElementById('copy-plan').addEventListener('click', async () => {
+      const plan = buildPlan(calc, currentTax, annualSavings);
+      try {
+        await navigator.clipboard.writeText(plan);
+        showToast('Filing plan copied');
+      } catch (e) {
+        showToast('Copy failed — try again');
+      }
+    });
+
+    document.getElementById('share-page').addEventListener('click', async () => {
+      const url = window.location.href;
+      const shareData = {
+        title: 'Senior Property Tax Calculator — 808 Housing',
+        text: 'If you own your home in Hawaiʻi and you\'re 60+, you may be paying too much property tax:',
+        url: url
+      };
+      if (navigator.share) {
+        try { await navigator.share(shareData); return; } catch (e) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('Link copied');
+      } catch (e) {
+        showToast('Copy this URL from your browser');
+      }
+    });
+
+    document.getElementById('back4').addEventListener('click', () => { state.step = 3; render(); });
+    document.getElementById('restart').addEventListener('click', () => {
+      state.step = 1; state.county = null; state.age = null;
+      state.assessed_value = null; state.has_exemption = null;
+      state.disability_flags = new Set();
+      render();
+    });
+  }
+
+  function buildPlan(calc, currentTax, annualSavings) {
+    const county = COUNTIES[state.county];
+    const date = new Date().toLocaleDateString();
+    let s = '808 Housing — Senior Property Tax Plan (' + date + ')\n\n';
+    s += 'County: ' + county.name + '\n';
+    s += 'Age: ' + state.age + '\n';
+    s += 'Assessed home value: ' + format(state.assessed_value) + '\n';
+    s += 'Current exemption status: ' + state.has_exemption + '\n';
+    if (state.disability_flags.size > 0) {
+      s += 'Special status: ' + [...state.disability_flags].join(', ') + '\n';
+    }
+    s += '\nCALCULATION:\n';
+    s += 'Age-based home exemption: ' + format(calc.exemption) + '\n';
+    if (calc.additional > 0) s += 'Additional 20% exemption: ' + format(calc.additional) + '\n';
+    if (calc.disability > 0) s += 'Disability exemption: ' + format(calc.disability) + '\n';
+    s += 'Taxable value: ' + format(calc.taxable) + '\n';
+    s += 'Tax rate: $' + county.tax_rate.toFixed(2) + ' per $1,000\n';
+    s += 'Annual tax should be: ' + (calc.is_veteran_full ? '~$100 (minimum)' : format(calc.tax)) + '\n';
+
+    if (annualSavings > 100) {
+      s += '\nESTIMATED ANNUAL OVERPAYMENT: ' + format(annualSavings) + '\n';
+      s += '10-year savings: ' + format(annualSavings * 10) + '\n';
+    }
+
+    s += '\nWHAT TO DO:\n';
+    s += '1. File ' + county.form + ' with ' + county.office + '\n';
+    s += '2. Deadline: ' + county.deadline + '\n';
+    s += '3. Contact: ' + county.phone + ' / ' + county.email + '\n';
+    s += '4. Address: ' + county.address + '\n';
+
+    if (county.tax_credit_note) {
+      s += '\nALSO LOOK INTO:\n' + county.tax_credit_note + '\n';
+    }
+
+    s += '\nFREE HELP:\n';
+    s += 'AARP Foundation Property Tax-Aide: 1-888-227-7669\n';
+    s += 'Hawaiʻi Tax Help: hawaiitaxhelp.org\n';
+    s += 'Aloha United Way 211: dial 211\n\n';
+    s += 'Generated at 808housing.org/senior-property-tax';
+    return s;
+  }
+
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toastEl.classList.remove('show'); }, 2400);
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>
